@@ -1,4 +1,3 @@
-// @ts-nocheck
 "use client";
 
 import { useGetCalls } from '@/hooks/useGetCalls';
@@ -48,7 +47,7 @@ const CallList = ({type}: {type: 'ended' | 'upcoming' | 'recordings'}) => {
                 const recordings = callData.filter(call => call.recordings.length > 0).flatMap(call => call.recordings);
                 setRecordings(recordings); 
             } catch (error) {
-                toast.error("Try again later");
+                toast.error(`Try again later: ${error instanceof Error ? error.message : 'Unknown error'}`);
             }
 
         }
