@@ -1,3 +1,4 @@
+"use client";
 import { cn } from "@/lib/utils";
 import {
   CallControls,
@@ -22,6 +23,7 @@ import { Button } from "./ui/button";
 import { useSearchParams } from "next/navigation";
 import EndCallButton from "./EndCallButton";
 import Loader from "./Loader";
+import { useRouter } from "next/navigation";
 
 type callLayoutType = "grid" | "speaker-left" | "speaker-right";
 
@@ -32,6 +34,7 @@ const MeetingRoom = () => {
   const [showParticipants, setShowParticipants] = useState(false);
   const {useCallCallingState} = useCallStateHooks();
   const callingState = useCallCallingState();
+  const router = useRouter();
 
   if(callingState !== CallingState.JOINED) return <Loader />;
 
@@ -61,7 +64,9 @@ const MeetingRoom = () => {
       </div>
 
       <div className="fixed bottom-0 flex w-full items-center justify-center gap-5 flex-wrap">
-        <CallControls />
+        <CallControls onLeave={() => {
+          router.push("/");
+        }} />
 
         <DropdownMenu>
             <div className="flex items-center">

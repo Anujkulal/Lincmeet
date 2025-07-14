@@ -28,6 +28,9 @@ const MeetingModel = ({isOpen, onClose, handleClick, className, title, image, bu
     <Dialog open={isOpen} onOpenChange={onClose}>
   {/* <DialogTrigger>Open</DialogTrigger> */}
   <DialogContent className='flex w-full max-w-[520px] flex-col gap-6 border-none bg-zinc-800 py-9 px-6 text-white'>
+    <DialogTitle className='text-2xl font-bold'>
+      Schedule a Meeting
+    </DialogTitle>
     <div className="flex flex-col gap-6">
         {
             image && (
