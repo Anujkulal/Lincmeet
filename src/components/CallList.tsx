@@ -60,21 +60,49 @@ const CallList = ({type}: {type: 'ended' | 'upcoming' | 'recordings'}) => {
 
     if(isLoading) return <Loader />
 
+    // Helper functions for meeting data
+    const getMeetingTitle = (meeting: Call | CallRecording): string => {
+        if("state" in meeting){
+            return meeting.state?.custom?.description?.substring(0, 26) || "Personal Meeting";
+        }
+        else return meeting.filename?.substring(0, 20) || "Recording";
+    }
+
+    const getMeetingDate = (meeting: Call | CallRecording): string => {
+        if("state" in  meeting) { 
+            return meeting.state?.startedAt?.toLocaleString() || "No Date available";
+        }
+        else return meeting.start_time?.toLocaleString() || "No Date available";
+    }
+
+    const getMeetingKey = (meeting: Call | CallRecording): string => {
+        if("id" in meeting) {
+            return meeting.id;
+        }
+         else return meeting.filename || `recording-${Date.now()}`;
+    }
+
+    // const handleMeetingClick = useCallback(() => {
+    //     if(type === "recordings"){
+    //         const recordingUrl = 
+    //     }
+    // }, [type, router]);
+
   return (
     <div className='grid grid-cols-1 gap-5 xl:grid-cols-2'>
         {calls && calls.length > 0 ? (
                 calls.map((meeting: Call | CallRecording) => (
                     <MeetingCard
-                    key={(meeting as Call).id}
+                    key={getMeetingKey(meeting)}
                     icon={
                         type === 'ended' ? '/icons/previous.svg' : type==='upcoming' ? '/icons/upcoming.svg' : '/icons/recordings.svg'
                     }
-                    title={(meeting as Call).state?.custom?.description?.substring(0, 26) || meeting?.filename?.substring(0, 20) || "Personal Meeting"}
-                    date={(meeting).state?.startsAt?.toLocaleString() || (meeting as CallRecording).start_time.toLocaleString()}
+                    title={getMeetingTitle(meeting)}
+                    date={getMeetingDate(meeting)}
                     isPreviousMeeting={type === 'ended'}
                     buttonIcon1={type === 'recordings' ? '/icons/play.svg' : undefined}
                     buttonText = {type === 'recordings' ? "Play" : "Start"}
-                    handleClick = {type==="recordings" ? () => router.push(`${meeting.url}`) : () => router.push(`/meeting/${meeting.id}`)}
+                    handleClick = {type==="recordings" ? () => router.push(`${(meeting as CallRecording).url}`) : () => router.push(`/meeting/${(meeting as Call).id}`)}
                     link={type === 'recordings' ? (meeting as CallRecording).url : `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${(meeting as Call).id}`}
                     />
                 ))
