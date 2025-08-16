@@ -8,6 +8,12 @@ import { useRouter } from 'next/navigation';
 import React from 'react'
 import { toast } from 'sonner';
 
+interface TableProps {
+  title: string;
+  description: string;
+  
+}
+
 const Table = ({title, description}: {title: string; description: string}) => {
   return(
     <div className="flex flex-col items-start gap-2 xl:flex-row">

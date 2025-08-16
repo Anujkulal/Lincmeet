@@ -50,6 +50,7 @@ export default function RootLayout({
       >
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased bg-zinc-800 text-zinc-100`}
+          suppressHydrationWarning
         >
           {children}
           <Toaster position="top-center" richColors closeButton/>
